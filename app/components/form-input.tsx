@@ -2,7 +2,7 @@ interface FormInputProps {
   label?: string;
   id: string;
   type?: string;
-  value: string;
+  value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   required?: boolean;
@@ -23,7 +23,7 @@ const FormInput = ({
     <div className="mb-4">
       {label && (
         <label
-          htmlFor={label}
+          htmlFor={id}
           className="block text-gray-300 text-sm font-medium mb-2"
         >
           {label} {required && <span className="text-red-500">*</span>}
@@ -36,7 +36,7 @@ const FormInput = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        // TODO: Remove comment
+        // TODO: Remove required
         // required={required}
         className={`w-full px-3 py-2 bg-gray-800 border text-gray-200 rounded-lg focus:outline-none focus:ring-2 transition-all duration-300 ${
           error

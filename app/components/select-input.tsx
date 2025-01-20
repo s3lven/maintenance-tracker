@@ -1,11 +1,11 @@
-import { Department, EquipmentStatus } from "@/types";
+import { SelectInputOptions } from "@/types";
 
 interface SelectInputProps {
   label?: string;
   id: string;
   value: string;
   onChange: (name: string, value: string) => void;
-  options: EquipmentStatus[] | Department[];
+  options: SelectInputOptions;
   required?: boolean;
   error?: string;
 }
@@ -23,7 +23,7 @@ const SelectInput = ({
     <>
       {label && (
         <label
-          htmlFor={label}
+          htmlFor={id}
           className="block text-gray-300 text-sm font-medium mb-2"
         >
           {label} {required && <span className="text-red-500">*</span>}
@@ -38,6 +38,8 @@ const SelectInput = ({
             ? "border-red-500 focus:ring-red-500"
             : "border-gray-700 focus:border-blue-500"
         }`}
+        // TODO: Remove required
+        // required={required}
       >
         <option value="N/A" disabled>
           Select an option

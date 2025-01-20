@@ -1,18 +1,18 @@
 "use server";
-import { equipmentSchema } from "@/lib/validations";
+import { maintenanceRecordSchema } from "@/lib/validations";
 
-export async function submitEquipmentForm(
+export async function submitMaintenanceRecordForm(
   prevState: unknown,
   formData: FormData
 ) {
   const rawFormData = Object.fromEntries(formData.entries());
   const parsedFormData = {
     ...rawFormData,
-    installDate: new Date(rawFormData.installDate as string),
+    date: new Date(rawFormData.date as string),
   };
   console.log("Form data:", parsedFormData);
 
-  const result = equipmentSchema.safeParse(parsedFormData);
+  const result = maintenanceRecordSchema.safeParse(parsedFormData);
 
   if (!result.success) {
     console.log(result.error.flatten().fieldErrors);
@@ -25,6 +25,6 @@ export async function submitEquipmentForm(
   // Save the data to the database
 
   return {
-    message: "Equipment added successfully!",
+    message: "Record added successfully!",
   };
 }

@@ -16,15 +16,29 @@ export interface Equipment {
   status: EquipmentStatus;
 }
 
+export type MaintenanceRecordType = "Preventive" | "Repair" | "Emergency";
+export type MaintenanceRecordPriority = "Low" | "Medium" | "High";
+export type MaintenanceRecordCompletionStatus =
+  | "Complete"
+  | "Incomplete"
+  | "Pending Parts";
+
 export interface MaintenanceRecord {
   id: string;
   equipmentId: string;
   date: Date;
-  type: "Preventive" | "Repair" | "Emergency";
+  type: MaintenanceRecordType;
   technician: string;
   hoursSpent: number;
   description: string;
   partsReplaced?: string[];
-  priority: "Low" | "Medium" | "High";
-  completionStatus: "Complete" | "Incomplete" | "Pending Parts";
+  priority: MaintenanceRecordPriority;
+  completionStatus: MaintenanceRecordCompletionStatus;
 }
+
+export type SelectInputOptions =
+  | Department[]
+  | EquipmentStatus[]
+  | MaintenanceRecordType[]
+  | MaintenanceRecordPriority[]
+  | MaintenanceRecordCompletionStatus[];

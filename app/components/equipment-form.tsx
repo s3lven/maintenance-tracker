@@ -1,13 +1,13 @@
 "use client";
 
-import { EquipmentFormData } from "@/lib/validations";
 import { useActionState, useState } from "react";
 import { submitEquipmentForm } from "../actions/equipment";
 
-import { Department, EquipmentStatus } from "@/types";
+import { Department, Equipment, EquipmentStatus } from "@/types";
 
 import FormInput from "./form-input";
 import SelectInput from "./select-input";
+import DateInput from "./date-input";
 
 const EquipmentForm = () => {
   const initialState = {
@@ -26,7 +26,7 @@ const EquipmentForm = () => {
     submitEquipmentForm,
     initialState
   );
-  const [formData, setFormData] = useState<Partial<EquipmentFormData>>({});
+  const [formData, setFormData] = useState<Partial<Equipment>>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -80,30 +80,18 @@ const EquipmentForm = () => {
         value={formData.serialNumber || ""}
         onChange={handleInputChange}
       />
-      {/* Install Date */}
-      <div>
-        <label htmlFor="installDate">
-          Install Date <span className="text-red-500">*</span>
-        </label>
-        <input
-          id="installDate"
-          name="installDate"
-          type="date"
-          value={
-            formData.installDate
-              ? new Date(formData.installDate).toISOString().split("T")[0]
-              : ""
-          }
-          onChange={handleInputChange}
-          required
-          className={`w-full px-3 py-2 bg-gray-800 border text-gray-200 rounded-lg focus:outline-none focus:ring-2 transition-all duration-300`}
-        />
-        {state.errors?.installDate && (
-          <p className="text-red-500 text-sm mt-1">
-            {state.errors.installDate[0]}
-          </p>
-        )}
-      </div>
+      <DateInput
+        id="installDate"
+        label="Install Date"
+        error={state.errors?.installDate?.[0]}
+        value={
+          formData.installDate
+            ? new Date(formData.installDate).toISOString().split("T")[0]
+            : ""
+        }
+        onChange={handleInputChange}
+        required
+      />
       <SelectInput
         label="Status"
         id="status"

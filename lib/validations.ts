@@ -13,7 +13,7 @@ export const equipmentSchema = z.object({
     .string()
     .regex(/^[a-zA-Z0-9]+$/, "Serial Number must be alphanumeric"),
   installDate: z
-    .date()
+    .date({ required_error: "Date is required" })
     .refine((date) => date < new Date(), "Install Date must be in the past"),
   status: z.enum(["Operational", "Down", "Maintenance", "Retired"], {
     required_error: "Department is required",
@@ -27,9 +27,12 @@ export type EquipmentFormData = z.infer<typeof equipmentSchema>;
 export const maintenanceRecordSchema = z.object({
   equipmentId: z.string().min(1, "Equipment selection is required"),
   date: z
-    .date()
+    .date({ required_error: "Date is required" })
     .refine((date) => date <= new Date(), "Date cannot be in the future"),
-  type: z.enum(["Preventive", "Repair", "Emergency"]),
+  type: z.enum(["Preventive", "Repair", "Emergency"], {
+    required_error: "Type is required",
+    invalid_type_error: "Type must be one of the specified values",
+  }),
   technician: z
     .string()
     .min(2, "Technician name must be at least 2 characters"),
@@ -39,8 +42,14 @@ export const maintenanceRecordSchema = z.object({
     .max(24, "Cannot exceed 24 hours"),
   description: z.string().min(10, "Description must be at least 10 characters"),
   partsReplaced: z.array(z.string()).optional(),
-  priority: z.enum(["Low", "Medium", "High"]),
-  completionStatus: z.enum(["Complete", "Incomplete", "Pending Parts"]),
+  priority: z.enum(["Low", "Medium", "High"], {
+    required_error: "Priority is required",
+    invalid_type_error: "Priority must be one of the specified values",
+  }),
+  completionStatus: z.enum(["Complete", "Incomplete", "Pending Parts"], {
+    required_error: "Completion Status is required",
+    invalid_type_error: "Completion Status must be one of the specified values",
+  }),
 });
 
 export type MaintenanceRecordFormData = z.infer<typeof maintenanceRecordSchema>;
