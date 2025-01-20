@@ -9,6 +9,9 @@ export async function submitMaintenanceRecordForm(
   const parsedFormData = {
     ...rawFormData,
     date: new Date(rawFormData.date as string),
+    partsReplaced: (rawFormData.partsReplaced as string)
+      .split(",")
+      .map((part) => part.trim())
   };
   console.log("Form data:", parsedFormData);
 

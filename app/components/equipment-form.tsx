@@ -39,7 +39,7 @@ const EquipmentForm = () => {
   return (
     <form
       action={formAction}
-      className="bg-gray-600 p-6 rounded-lg shadow-md max-w-md mx-auto space-y-4"
+      className="bg-gray-600 p-6 rounded-lg shadow-md max-w-md space-y-4"
     >
       <h2 className="text-2xl">Equipment Form</h2>
       <FormInput

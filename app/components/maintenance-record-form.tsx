@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import React, { useActionState, useState } from "react";
 import { submitMaintenanceRecordForm } from "../actions/maintenance-record";
 
 import {
@@ -36,7 +36,9 @@ const MaintenanceRecordForm = () => {
   );
   const [formData, setFormData] = useState<Partial<MaintenanceRecord>>({});
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -47,9 +49,9 @@ const MaintenanceRecordForm = () => {
   return (
     <form
       action={formAction}
-      className="bg-gray-600 p-6 rounded-lg shadow-md max-w-md mx-auto space-y-4"
+      className="bg-gray-600 p-6 rounded-lg shadow-md max-w-md space-y-4"
     >
-      <h2 className="text-2xl">Equipment Form</h2>
+      <h2 className="text-2xl">Maintenance Record Form</h2>
       <FormInput
         label="Equipment"
         id="equipmentId"
@@ -101,7 +103,31 @@ const MaintenanceRecordForm = () => {
         value={formData.description || ""}
         onChange={handleInputChange}
       />
-      {/* TODO: FIGURE OUT PARTS REPLACED */}
+      <div className="mb-4">
+        <label
+          htmlFor="partsReplaced"
+          className="block text-gray-300 text-sm font-medium mb-2"
+        >
+          Parts Replaced (Optional)
+        </label>
+        <textarea
+          id="partsReplaced"
+          name="partsReplaced"
+          placeholder="Enter parts replaced, separated by commas"
+          value={formData.partsReplaced || ""}
+          onChange={handleInputChange}
+          className={`min-h-[60px] w-full border-input px-3 py-2 shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm bg-gray-800 border text-gray-200 rounded-lg focus:outline-none focus:ring-2 transition-all duration-300 ${
+            state.errors?.partsReplaced
+              ? "border-red-500 focus:ring-red-500"
+              : "border-gray-700 focus:border-blue-500"
+          }`}
+        />
+        {state.errors?.partsReplaced && (
+          <p className="text-red-500 text-sm mt-1">
+            {state.errors.partsReplaced[0]}
+          </p>
+        )}
+      </div>
       <SelectInput
         label="Priority"
         id="priority"
