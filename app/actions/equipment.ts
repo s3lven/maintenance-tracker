@@ -25,6 +25,7 @@ export async function submitEquipmentForm(
   // Save the data to the database
 
   return {
+    success: true,
     message: "Equipment added successfully!",
   };
 }

@@ -28,12 +28,8 @@ const EquipmentForm = () => {
   );
   const [formData, setFormData] = useState<Partial<Equipment>>({});
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData({ ...formData, [name]: value });
   };
 
   return (
@@ -59,11 +55,12 @@ const EquipmentForm = () => {
       <SelectInput
         label="Department"
         id="department"
+
         options={
           ["Machining", "Assembly", "Packaging", "Shipping"] as Department[]
         }
         error={state.errors?.department?.[0]}
-        onChange={handleSelectChange}
+        onChange={handleInputChange}
         value={formData.department || ""}
       />
       <FormInput
@@ -98,9 +95,10 @@ const EquipmentForm = () => {
         options={
           ["Down", "Maintenance", "Operational", "Retired"] as EquipmentStatus[]
         }
-        onChange={handleSelectChange}
+        onChange={handleInputChange}
         value={formData.status || ""}
         error={state.errors?.status?.[0]}
+        dataTestId={"equipment-status"}
       />
       <button
         type="submit"
@@ -109,6 +107,7 @@ const EquipmentForm = () => {
       >
         {isLoading ? "Submitting..." : "Submit"}
       </button>
+      {state.success && (<p>{state.message}</p>)}
     </form>
   );
 };

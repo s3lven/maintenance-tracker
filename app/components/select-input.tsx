@@ -1,13 +1,15 @@
 import { SelectInputOptions } from "@/types";
+import React from "react";
 
 interface SelectInputProps {
   label?: string;
   id: string;
   value: string;
-  onChange: (name: string, value: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   options: SelectInputOptions;
   required?: boolean;
   error?: string;
+  dataTestId?: string | null;
 }
 
 const SelectInput = ({
@@ -18,6 +20,7 @@ const SelectInput = ({
   required = false,
   options,
   error,
+  dataTestId = null
 }: SelectInputProps) => {
   return (
     <>
@@ -31,8 +34,9 @@ const SelectInput = ({
       )}
       <select
         id={id}
+        name={id}
         value={value}
-        onChange={(e) => onChange(id, e.target.value)}
+        onChange={onChange}
         className={`w-full px-3 py-2 bg-gray-800 border text-gray-200 rounded-lg focus:outline-none focus:ring-2 transition-all duration-300 ${
           error
             ? "border-red-500 focus:ring-red-500"
@@ -40,12 +44,13 @@ const SelectInput = ({
         }`}
         // TODO: Remove required
         // required={required}
+        data-testid={dataTestId || null}
       >
         <option value="N/A" disabled>
           Select an option
         </option>
         {options.map((option, index) => (
-          <option key={index}>{option}</option>
+          <option key={index} value={option}>{option}</option>
         ))}
       </select>
       {error && <p className="text-red-500 text-sx mt-1">{error}</p>}

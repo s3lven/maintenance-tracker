@@ -11,6 +11,7 @@ export const equipmentSchema = z.object({
   model: z.string().min(1, "Model is required"),
   serialNumber: z
     .string()
+    .min(1, "Serial Number is required")
     .regex(/^[a-zA-Z0-9]+$/, "Serial Number must be alphanumeric"),
   installDate: z
     .date({ required_error: "Date is required" })

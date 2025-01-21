@@ -37,13 +37,11 @@ const MaintenanceRecordForm = () => {
   const [formData, setFormData] = useState<Partial<MaintenanceRecord>>({});
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData({ ...formData, [name]: value });
   };
 
   return (
@@ -78,8 +76,9 @@ const MaintenanceRecordForm = () => {
           ["Emergency", "Preventive", "Repair"] as MaintenanceRecordType[]
         }
         error={state.errors?.type?.[0]}
-        onChange={handleSelectChange}
+        onChange={handleInputChange}
         value={formData.type || ""}
+        dataTestId={"maintenance-record-type"}
       />
       <FormInput
         label="Technician"
@@ -132,9 +131,10 @@ const MaintenanceRecordForm = () => {
         label="Priority"
         id="priority"
         options={["High", "Medium", "Low"] as MaintenanceRecordPriority[]}
-        onChange={handleSelectChange}
+        onChange={handleInputChange}
         value={formData.priority || ""}
         error={state.errors?.priority?.[0]}
+        dataTestId={"maintenance-record-priority"}
       />
       <SelectInput
         label="Completion Status"
@@ -146,9 +146,10 @@ const MaintenanceRecordForm = () => {
             "Pending Parts",
           ] as MaintenanceRecordCompletionStatus[]
         }
-        onChange={handleSelectChange}
+        onChange={handleInputChange}
         value={formData.completionStatus || ""}
         error={state.errors?.completionStatus?.[0]}
+        dataTestId={"maintenance-record-completion-status"}
       />
       <button
         type="submit"

@@ -28,6 +28,7 @@ export async function submitMaintenanceRecordForm(
   // Save the data to the database
 
   return {
+    success: true,
     message: "Record added successfully!",
   };
 }
