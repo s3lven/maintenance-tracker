@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { submitEquipmentForm } from "../actions/equipment";
+import { addEquipment } from "../actions/equipment";
 
 import { Department, Equipment, EquipmentStatus } from "@/types";
 
@@ -23,7 +23,7 @@ const EquipmentForm = () => {
     message: "",
   };
   const [state, formAction, isLoading] = useActionState(
-    submitEquipmentForm,
+    addEquipment,
     initialState
   );
   const [formData, setFormData] = useState<Partial<Equipment>>({});
@@ -35,7 +35,7 @@ const EquipmentForm = () => {
   return (
     <form
       action={formAction}
-      className="bg-gray-600 p-6 rounded-lg shadow-md max-w-md space-y-4"
+      className="bg-gray-600 p-6 rounded-lg shadow-md space-y-4"
     >
       <h2 className="text-2xl">Equipment Form</h2>
       <FormInput

@@ -14,10 +14,8 @@ import {
 import FormInput from "./form-input";
 import SelectInput from "./select-input";
 import DateInput from "./date-input";
-import useEquipmentStore from "@/stores/equipment-store";
-import { useShallow } from "zustand/shallow";
 
-const MaintenanceRecordForm = () => {
+const MaintenanceRecordForm = ({equipments} : {equipments: Equipment[]}) => {
   const initialState = {
     errors: {
       equipmentId: undefined,
@@ -47,14 +45,11 @@ const MaintenanceRecordForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const [equipments] = useEquipmentStore(
-    useShallow((state) => [state.equipments])
-  );
 
   return (
     <form
       action={formAction}
-      className="bg-gray-600 p-6 rounded-lg shadow-md max-w-md space-y-4"
+      className="bg-gray-600 p-6 rounded-lg shadow-md space-y-4"
     >
       <h2 className="text-2xl">Maintenance Record Form</h2>
       <SelectInput
