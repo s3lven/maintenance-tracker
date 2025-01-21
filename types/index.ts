@@ -41,4 +41,5 @@ export type SelectInputOptions =
   | EquipmentStatus[]
   | MaintenanceRecordType[]
   | MaintenanceRecordPriority[]
-  | MaintenanceRecordCompletionStatus[];
+  | MaintenanceRecordCompletionStatus[]
+  | Equipment[];

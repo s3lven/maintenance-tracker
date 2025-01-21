@@ -50,7 +50,9 @@ const SelectInput = ({
           Select an option
         </option>
         {options.map((option, index) => (
-          <option key={index} value={option}>{option}</option>
+          <option key={index} value={typeof option === "string" ? option : option.id}>
+            {typeof option === "string" ? option : option.name}
+          </option>
         ))}
       </select>
       {error && <p className="text-red-500 text-sx mt-1">{error}</p>}

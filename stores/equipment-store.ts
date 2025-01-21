@@ -12,7 +12,18 @@ interface EquipmentState {
 const useEquipmentStore = create<EquipmentState>()(
   devtools(
     immer((set) => ({
-      equipments: [],
+      equipments: [
+        {
+            id: "1",
+            name: "Test Equipment",
+            department: "Machining",
+            installDate: new Date("2023-01-01"),
+            location: "Test Location",
+            model: "TEST-123",
+            serialNumber: "ABC123",
+            status: "Operational"
+        }
+      ],
       addEquipment: (equipment) =>
         set((state) => {
           state.equipments.push(equipment);

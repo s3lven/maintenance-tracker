@@ -4,6 +4,7 @@ import React, { useActionState, useState } from "react";
 import { submitMaintenanceRecordForm } from "../actions/maintenance-record";
 
 import {
+  Equipment,
   MaintenanceRecord,
   MaintenanceRecordCompletionStatus,
   MaintenanceRecordPriority,
@@ -13,6 +14,8 @@ import {
 import FormInput from "./form-input";
 import SelectInput from "./select-input";
 import DateInput from "./date-input";
+import useEquipmentStore from "@/stores/equipment-store";
+import { useShallow } from "zustand/shallow";
 
 const MaintenanceRecordForm = () => {
   const initialState = {
@@ -44,22 +47,27 @@ const MaintenanceRecordForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const [equipments] = useEquipmentStore(
+    useShallow((state) => [state.equipments])
+  );
+
   return (
     <form
       action={formAction}
       className="bg-gray-600 p-6 rounded-lg shadow-md max-w-md space-y-4"
     >
       <h2 className="text-2xl">Maintenance Record Form</h2>
-      <FormInput
-        label="Equipment"
+      <SelectInput
         id="equipmentId"
+        label="Equipment"
         error={state.errors?.equipmentId?.[0]}
         value={formData.equipmentId || ""}
         onChange={handleInputChange}
+        options={equipments as Equipment[]}
       />
       <DateInput
         id="date"
-        label="Date"
+        label="Maintenance Date"
         onChange={handleInputChange}
         value={
           formData.date
@@ -158,6 +166,15 @@ const MaintenanceRecordForm = () => {
       >
         {isLoading ? "Submitting..." : "Submit"}
       </button>
+      {state.message && (
+        <p
+          className={`text-center font-semibold ${
+            state.errors ? "text-red-500" : "text-green-500"
+          }`}
+        >
+          {state.message}
+        </p>
+      )}
     </form>
   );
 };
