@@ -11,7 +11,8 @@ export async function submitMaintenanceRecordForm(
     date: new Date(rawFormData.date as string),
     partsReplaced: (rawFormData.partsReplaced as string)
       .split(",")
-      .map((part) => part.trim())
+      .map((part) => part.trim()),
+    hoursSpent: Number(rawFormData.hoursSpent),
   };
   console.log("Form data:", parsedFormData);
 

@@ -107,7 +107,15 @@ const EquipmentForm = () => {
       >
         {isLoading ? "Submitting..." : "Submit"}
       </button>
-      {state.success && (<p>{state.message}</p>)}
+      {state.message && (
+        <p
+          className={`text-center font-semibold ${
+            state.errors ? "text-red-500" : "text-green-500"
+          }`}
+        >
+          {state.message}
+        </p>
+      )}
     </form>
   );
 };
