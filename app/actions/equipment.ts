@@ -3,7 +3,6 @@ import { equipmentSchema } from "@/lib/validations";
 import { Equipment } from "@/types";
 import { revalidatePath } from "next/cache";
 
-// This would be replaced with your actual database logic
 const equipmentData: Equipment[] = [
   {
     id: "1",

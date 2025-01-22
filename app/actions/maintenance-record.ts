@@ -1,5 +1,26 @@
 "use server";
 import { maintenanceRecordSchema } from "@/lib/validations";
+import { MaintenanceRecord } from "@/types";
+import { revalidatePath } from "next/cache";
+
+const maintenanceRecords: MaintenanceRecord[] = [
+  {
+    id: "1",
+    equipmentId: "Test Equipment",
+    date: new Date(),
+    type: "Preventive",
+    technician: "John Doe",
+    hoursSpent: 2,
+    description: "Routine check-up and maintenance",
+    partsReplaced: ["Filter", "Belt"],
+    priority: "Medium",
+    completionStatus: "Complete",
+  },
+];
+
+export async function getMaintenanceRecords(): Promise<MaintenanceRecord[]> {
+  return maintenanceRecords;
+}
 
 export async function submitMaintenanceRecordForm(
   prevState: unknown,
@@ -37,7 +58,14 @@ export async function submitMaintenanceRecordForm(
     };
   }
 
+  const newRecord: MaintenanceRecord = {
+    ...result.data,
+    id: String(maintenanceRecords.length + 1),
+  }
+
   // Save the data to the database
+  maintenanceRecords.push(newRecord);
+  revalidatePath('/')
 
   return {
     success: true,

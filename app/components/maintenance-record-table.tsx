@@ -1,6 +1,11 @@
 "use client";
 
-import { Department, Equipment, EquipmentStatus } from "@/types";
+import {
+  MaintenanceRecord,
+  MaintenanceRecordCompletionStatus,
+  MaintenanceRecordPriority,
+  MaintenanceRecordType,
+} from "@/types";
 import {
   ColumnFiltersState,
   createColumnHelper,
@@ -13,50 +18,60 @@ import {
 } from "@tanstack/react-table";
 import React from "react";
 
-const columnHelper = createColumnHelper<Equipment>();
+const columnHelper = createColumnHelper<MaintenanceRecord>();
 
 const columns = [
   columnHelper.accessor("id", {
     header: "ID",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("name", {
-    header: "Name",
+  columnHelper.accessor("equipmentId", {
+    header: "Equipment Name",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("location", {
-    header: "Location",
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor("department", {
-    header: "Department",
-    cell: (info) => info.getValue(),
-    filterFn: "includesString",
-  }),
-  columnHelper.accessor("status", {
-    header: "Status",
-    cell: (info) => info.getValue(),
-    filterFn: "includesString",
-  }),
-  columnHelper.accessor("model", {
-    header: "Model",
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor("serialNumber", {
-    header: "Serial Number",
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor("installDate", {
-    header: "Install Date",
+  columnHelper.accessor("date", {
+    header: "Maintenance Date",
     cell: (info) => info.getValue().toLocaleDateString(),
+  }),
+  columnHelper.accessor("type", {
+    header: "Type",
+    cell: (info) => info.getValue(),
+    filterFn: "includesString",
+  }),
+  columnHelper.accessor("technician", {
+    header: "Technician",
+    cell: (info) => info.getValue(),
+  }),
+  columnHelper.accessor("hoursSpent", {
+    header: "Hours Spent",
+    cell: (info) => info.getValue().toString(),
+  }),
+  columnHelper.accessor("completionStatus", {
+    header: "Completion Status",
+    cell: (info) => info.getValue(),
+    filterFn: "includesString",
+  }),
+  columnHelper.accessor("priority", {
+    header: "Priority",
+    cell: (info) => info.getValue(),
+    filterFn: "includesString",
+  }),
+  columnHelper.accessor("partsReplaced", {
+    header: "Parts Replaced",
+    cell: (info) => info.getValue(),
+  }),
+  columnHelper.accessor("description", {
+    header: "Description",
+    cell: (info) => info.getValue(),
+    // Might need to adjust the size of this column
   }),
 ];
 
-interface EquipmentTableProps {
-  data: Equipment[];
+interface MaintenanceRecordTableProps {
+  data: MaintenanceRecord[];
 }
 
-const EquipmentTable = ({ data }: EquipmentTableProps) => {
+const MaintenanceRecordTable = ({ data }: MaintenanceRecordTableProps) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -80,16 +95,9 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
     onColumnFiltersChange: setColumnFilters,
   });
 
-  const equipmentStatus: EquipmentStatus[] = [
-    "Down",
-    "Maintenance",
-    "Operational",
-    "Retired",
-  ];
-
   return (
     <div className="space-y-4 w-full">
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-5 gap-4">
         <input
           type="text"
           value={globalFilter}
@@ -100,32 +108,57 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
 
         <select
           className="p-2 rounded-lg bg-gray-700 col-span-1"
-          value={table.getColumn("department")!.getFilterValue() as string}
+          value={table.getColumn("type")!.getFilterValue() as string}
           onChange={(e) =>
-            table.getColumn("department")!.setFilterValue(e.target.value)
+            table.getColumn("type")!.setFilterValue(e.target.value)
           }
         >
-          <option value="">All Departments</option>
+          <option value="">All Types</option>
           {(
-            ["Assembly", "Machining", "Packaging", "Shipping"] as Department[]
-          ).map((department) => (
-            <option key={department} value={department}>
-              {department}
+            ["Emergency", "Preventive", "Repair"] as MaintenanceRecordType[]
+          ).map((item) => (
+            <option key={item} value={item}>
+              {item}
             </option>
           ))}
         </select>
 
         <select
           className="p-2 rounded-lg bg-gray-700 col-span-1"
-          value={table.getColumn("status")!.getFilterValue() as string}
+          value={table.getColumn("priority")!.getFilterValue() as string}
           onChange={(e) =>
-            table.getColumn("status")!.setFilterValue(e.target.value)
+            table.getColumn("priority")!.setFilterValue(e.target.value)
           }
         >
           <option value="">All Status</option>
-          {equipmentStatus.map((status) => (
-            <option key={status} value={status}>
-              {status}
+          {(["Low", "Medium", "High"] as MaintenanceRecordPriority[]).map(
+            (item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            )
+          )}
+        </select>
+
+        <select
+          className="p-2 rounded-lg bg-gray-700 col-span-1"
+          value={
+            table.getColumn("completionStatus")!.getFilterValue() as string
+          }
+          onChange={(e) =>
+            table.getColumn("completionStatus")!.setFilterValue(e.target.value)
+          }
+        >
+          <option value="">All Status</option>
+          {(
+            [
+              "Complete",
+              "Incomplete",
+              "Pending Parts",
+            ] as MaintenanceRecordCompletionStatus[]
+          ).map((item) => (
+            <option key={item} value={item}>
+              {item}
             </option>
           ))}
         </select>
@@ -202,4 +235,4 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
   );
 };
 
-export default EquipmentTable;
+export default MaintenanceRecordTable;
