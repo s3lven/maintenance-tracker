@@ -1,6 +1,6 @@
 "use client";
 
-import { Equipment, EquipmentStatus } from "@/types";
+import { Department, Equipment, EquipmentStatus } from "@/types";
 import {
   ColumnFiltersState,
   createColumnHelper,
@@ -97,6 +97,23 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
           placeholder="Search equipment..."
           className="p-2 rounded-lg bg-gray-700 col-span-2"
         />
+
+        <select
+          className="p-2 rounded-lg bg-gray-700 col-span-1"
+          value={table.getColumn("department")!.getFilterValue() as string}
+          onChange={(e) =>
+            table.getColumn("department")!.setFilterValue(e.target.value)
+          }
+        >
+          <option value="">All Departments</option>
+          {(
+            ["Assembly", "Machining", "Packaging", "Shipping"] as Department[]
+          ).map((department) => (
+            <option key={department} value={department}>
+              {department}
+            </option>
+          ))}
+        </select>
 
         <select
           className="p-2 rounded-lg bg-gray-700 col-span-1"
