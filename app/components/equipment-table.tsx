@@ -1,10 +1,12 @@
 "use client";
 
-import { Equipment } from "@/types";
+import { Equipment, EquipmentStatus } from "@/types";
 import {
+  ColumnFiltersState,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getSortedRowModel,
   useReactTable,
   type SortingState,
@@ -29,10 +31,12 @@ const columns = [
   columnHelper.accessor("department", {
     header: "Department",
     cell: (info) => info.getValue(),
+    filterFn: "includesString",
   }),
   columnHelper.accessor("status", {
     header: "Status",
     cell: (info) => info.getValue(),
+    filterFn: "includesString",
   }),
   columnHelper.accessor("model", {
     header: "Model",
@@ -54,20 +58,61 @@ interface EquipmentTableProps {
 
 const EquipmentTable = ({ data }: EquipmentTableProps) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [globalFilter, setGlobalFilter] = React.useState("");
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
 
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
+    filterFns: {},
     onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
+      globalFilter,
+      columnFilters,
     },
+    onGlobalFilterChange: setGlobalFilter,
+    onColumnFiltersChange: setColumnFilters,
   });
 
+  const equipmentStatus: EquipmentStatus[] = [
+    "Down",
+    "Maintenance",
+    "Operational",
+    "Retired",
+  ];
+
   return (
-    <div>
+    <div className="space-y-4">
+      <div className="grid grid-cols-4 gap-4">
+        <input
+          type="text"
+          value={globalFilter}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+          placeholder="Search equipment..."
+          className="p-2 rounded-lg bg-gray-700 col-span-2"
+        />
+
+        <select
+          className="p-2 rounded-lg bg-gray-700 col-span-1"
+          value={table.getColumn("status")!.getFilterValue() as string}
+          onChange={(e) =>
+            table.getColumn("status")!.setFilterValue(e.target.value)
+          }
+        >
+          <option value="">All Status</option>
+          {equipmentStatus.map((status) => (
+            <option key={status} value={status}>
+              {status}
+            </option>
+          ))}
+        </select>
+      </div>
       <table className="w-full border-collapse bg-gray-800 shadow-md rounded-lg overflow-hidden">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
