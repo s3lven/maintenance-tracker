@@ -5,7 +5,17 @@ export async function submitMaintenanceRecordForm(
   prevState: unknown,
   formData: FormData
 ) {
-  const rawFormData = Object.fromEntries(formData.entries());
+  const rawFormData = {
+    equipmentId: formData.get("equipmentId") as string,
+    date: formData.get("date") as string,
+    type: formData.get("type") as string,
+    technician: formData.get("technician") as string,
+    hoursSpent: formData.get("hoursSpent") as string,
+    description: formData.get("description") as string,
+    partsReplaced: formData.get("partsReplaced") as string,
+    priority: formData.get("priority") as string,
+    completionStatus: formData.get("completionStatus") as string,
+  };
   const parsedFormData = {
     ...rawFormData,
     date: new Date(rawFormData.date as string),
@@ -23,6 +33,7 @@ export async function submitMaintenanceRecordForm(
     return {
       errors: result.error.flatten().fieldErrors,
       message: "Form submission failed. Please check the errors.",
+      inputs: rawFormData,
     };
   }
 

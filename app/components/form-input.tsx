@@ -2,8 +2,7 @@ interface FormInputProps {
   label?: string;
   id: string;
   type?: string;
-  value: string | number;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  defaultValue?: string;
   placeholder?: string;
   required?: boolean;
   error?: string;
@@ -14,8 +13,7 @@ const FormInput = ({
   id,
   type = "text",
   placeholder,
-  value,
-  onChange,
+  defaultValue,
   required = false,
   error,
 }: FormInputProps) => {
@@ -34,8 +32,7 @@ const FormInput = ({
         name={id}
         type={type}
         placeholder={placeholder}
-        value={value}
-        onChange={onChange}
+        defaultValue={defaultValue as string}
         // TODO: Remove required
         // required={required}
         className={`w-full px-3 py-2 bg-gray-800 border text-gray-200 rounded-lg focus:outline-none focus:ring-2 transition-all duration-300 ${

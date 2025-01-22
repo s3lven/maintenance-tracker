@@ -22,10 +22,14 @@ export async function getEquipment(): Promise<Equipment[]> {
 }
 
 export async function addEquipment(prevState: unknown, formData: FormData) {
-  const rawFormData = Object.fromEntries(formData.entries());
   const parsedFormData = {
-    ...rawFormData,
-    installDate: new Date(rawFormData.installDate as string),
+    name: formData.get('name') as string,
+    location: formData.get('location') as string,
+    department: formData.get('department') as string,
+    model: formData.get('model') as string,
+    serialNumber: formData.get('serialNumber') as string,
+    status: formData.get('status') as string,
+    installDate: new Date(formData.get('installDate') as string),
   };
   console.log("Form data:", parsedFormData);
 
@@ -36,6 +40,10 @@ export async function addEquipment(prevState: unknown, formData: FormData) {
     return {
       errors: result.error.flatten().fieldErrors,
       message: "Form submission failed. Please check the errors.",
+      inputs: {
+        ...parsedFormData,
+        instalLDate: formData.get('installDate')
+      },
     };
   }
 
@@ -52,4 +60,37 @@ export async function addEquipment(prevState: unknown, formData: FormData) {
     success: true,
     message: "Equipment added successfully!",
   };
+}
+
+export async function updateEquipment(
+  id: string,
+  data: Equipment
+): Promise<{ success: boolean; message: string }> {
+  const result = equipmentSchema.safeParse(data);
+
+  if (!result.success) {
+    return { success: false, message: "Validation failed" };
+  }
+
+  const index = equipmentData.findIndex((e) => e.id === id);
+  if (index === -1) {
+    return { success: false, message: "Equipment not found" };
+  }
+
+  equipmentData[index] = { ...result.data, id };
+  revalidatePath("/");
+  return { success: true, message: "Equipment updated successfully" };
+}
+
+export async function deleteEquipment(
+  id: string
+): Promise<{ success: boolean; message: string }> {
+  const index = equipmentData.findIndex((e) => e.id === id);
+  if (index === -1) {
+    return { success: false, message: "Equipment not found" };
+  }
+
+  equipmentData.splice(index, 1);
+  revalidatePath("/");
+  return { success: true, message: "Equipment deleted successfully" };
 }

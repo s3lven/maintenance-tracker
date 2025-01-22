@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useActionState, useState } from "react";
+import React, { useActionState } from "react";
 import { submitMaintenanceRecordForm } from "../actions/maintenance-record";
 
 import {
   Equipment,
-  MaintenanceRecord,
   MaintenanceRecordCompletionStatus,
   MaintenanceRecordPriority,
   MaintenanceRecordType,
@@ -15,36 +14,15 @@ import FormInput from "./form-input";
 import SelectInput from "./select-input";
 import DateInput from "./date-input";
 
-const MaintenanceRecordForm = ({equipments} : {equipments: Equipment[]}) => {
+const MaintenanceRecordForm = ({ equipments }: { equipments: Equipment[] }) => {
   const initialState = {
-    errors: {
-      equipmentId: undefined,
-      date: undefined,
-      type: undefined,
-      technician: undefined,
-      hoursSpent: undefined,
-      description: undefined,
-      installDate: undefined,
-      partsReplaced: undefined,
-      priority: undefined,
-      completionStatus: undefined,
-    },
     message: "",
+    success: false,
   };
   const [state, formAction, isLoading] = useActionState(
     submitMaintenanceRecordForm,
     initialState
   );
-  const [formData, setFormData] = useState<Partial<MaintenanceRecord>>({});
-
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
 
   return (
     <form
@@ -56,21 +34,15 @@ const MaintenanceRecordForm = ({equipments} : {equipments: Equipment[]}) => {
         id="equipmentId"
         label="Equipment"
         error={state.errors?.equipmentId?.[0]}
-        value={formData.equipmentId || ""}
-        onChange={handleInputChange}
+        defaultValue={state.inputs?.equipmentId || ""}
         options={equipments as Equipment[]}
       />
       <DateInput
         id="date"
         label="Maintenance Date"
-        onChange={handleInputChange}
-        value={
-          formData.date
-            ? new Date(formData.date).toISOString().split("T")[0]
-            : ""
-        }
         error={state.errors?.date?.[0]}
         required
+        defaultValue={state.inputs?.date}
       />
       <SelectInput
         label="Type"
@@ -79,31 +51,27 @@ const MaintenanceRecordForm = ({equipments} : {equipments: Equipment[]}) => {
           ["Emergency", "Preventive", "Repair"] as MaintenanceRecordType[]
         }
         error={state.errors?.type?.[0]}
-        onChange={handleInputChange}
-        value={formData.type || ""}
         dataTestId={"maintenance-record-type"}
+        defaultValue={state.inputs?.type || ""}
       />
       <FormInput
         label="Technician"
         id="technician"
         error={state.errors?.technician?.[0]}
-        value={formData.technician || ""}
-        onChange={handleInputChange}
+        defaultValue={state.inputs?.technician}
       />
       <FormInput
         label="Hours Spent"
         id="hoursSpent"
         type="number"
         error={state.errors?.hoursSpent?.[0]}
-        value={formData.hoursSpent || ""}
-        onChange={handleInputChange}
+        defaultValue={state.inputs?.hoursSpent}
       />
       <FormInput
         label="Description"
         id="description"
         error={state.errors?.description?.[0]}
-        value={formData.description || ""}
-        onChange={handleInputChange}
+        defaultValue={state.inputs?.description}
       />
       <div className="mb-4">
         <label
@@ -116,13 +84,12 @@ const MaintenanceRecordForm = ({equipments} : {equipments: Equipment[]}) => {
           id="partsReplaced"
           name="partsReplaced"
           placeholder="Enter parts replaced, separated by commas"
-          value={formData.partsReplaced || ""}
-          onChange={handleInputChange}
           className={`min-h-[60px] w-full border-input px-3 py-2 shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm bg-gray-800 border text-gray-200 rounded-lg focus:outline-none focus:ring-2 transition-all duration-300 ${
             state.errors?.partsReplaced
               ? "border-red-500 focus:ring-red-500"
               : "border-gray-700 focus:border-blue-500"
           }`}
+          defaultValue={state.inputs?.partsReplaced}
         />
         {state.errors?.partsReplaced && (
           <p className="text-red-500 text-sm mt-1">
@@ -134,10 +101,9 @@ const MaintenanceRecordForm = ({equipments} : {equipments: Equipment[]}) => {
         label="Priority"
         id="priority"
         options={["High", "Medium", "Low"] as MaintenanceRecordPriority[]}
-        onChange={handleInputChange}
-        value={formData.priority || ""}
         error={state.errors?.priority?.[0]}
         dataTestId={"maintenance-record-priority"}
+        defaultValue={state.inputs?.priority || ""}
       />
       <SelectInput
         label="Completion Status"
@@ -149,10 +115,9 @@ const MaintenanceRecordForm = ({equipments} : {equipments: Equipment[]}) => {
             "Pending Parts",
           ] as MaintenanceRecordCompletionStatus[]
         }
-        onChange={handleInputChange}
-        value={formData.completionStatus || ""}
         error={state.errors?.completionStatus?.[0]}
         dataTestId={"maintenance-record-completion-status"}
+        defaultValue={state.inputs?.completionStatus || ""}
       />
       <button
         type="submit"

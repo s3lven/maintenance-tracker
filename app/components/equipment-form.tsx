@@ -1,9 +1,9 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState } from "react";
 import { addEquipment } from "../actions/equipment";
 
-import { Department, Equipment, EquipmentStatus } from "@/types";
+import { Department, EquipmentStatus } from "@/types";
 
 import FormInput from "./form-input";
 import SelectInput from "./select-input";
@@ -11,26 +11,14 @@ import DateInput from "./date-input";
 
 const EquipmentForm = () => {
   const initialState = {
-    errors: {
-      name: undefined,
-      location: undefined,
-      department: undefined,
-      status: undefined,
-      model: undefined,
-      serialNumber: undefined,
-      installDate: undefined,
-    },
     message: "",
+    success: false,
   };
+
   const [state, formAction, isLoading] = useActionState(
     addEquipment,
     initialState
   );
-  const [formData, setFormData] = useState<Partial<Equipment>>({});
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   return (
     <form
@@ -42,52 +30,41 @@ const EquipmentForm = () => {
         label="Name"
         id="name"
         error={state.errors?.name?.[0]}
-        value={formData.name || ""}
-        onChange={handleInputChange}
+        defaultValue={state.inputs?.name}
       />
       <FormInput
         label="Location"
         id="location"
         error={state.errors?.location?.[0]}
-        value={formData.location || ""}
-        onChange={handleInputChange}
+        defaultValue={state.inputs?.location}
       />
       <SelectInput
         label="Department"
         id="department"
-
         options={
           ["Machining", "Assembly", "Packaging", "Shipping"] as Department[]
         }
         error={state.errors?.department?.[0]}
-        onChange={handleInputChange}
-        value={formData.department || ""}
+        defaultValue={state.inputs?.department || ""}
       />
       <FormInput
         label="Model"
         id="model"
         error={state.errors?.model?.[0]}
-        value={formData.model || ""}
-        onChange={handleInputChange}
+        defaultValue={state.inputs?.model}
       />
       <FormInput
         label="Serial Number"
         id="serialNumber"
         error={state.errors?.serialNumber?.[0]}
-        value={formData.serialNumber || ""}
-        onChange={handleInputChange}
+        defaultValue={state.inputs?.serialNumber}
       />
       <DateInput
         id="installDate"
         label="Install Date"
         error={state.errors?.installDate?.[0]}
-        value={
-          formData.installDate
-            ? new Date(formData.installDate).toISOString().split("T")[0]
-            : ""
-        }
-        onChange={handleInputChange}
         required
+        defaultValue={state.inputs?.installDate?.toString()}
       />
       <SelectInput
         label="Status"
@@ -95,10 +72,9 @@ const EquipmentForm = () => {
         options={
           ["Down", "Maintenance", "Operational", "Retired"] as EquipmentStatus[]
         }
-        onChange={handleInputChange}
-        value={formData.status || ""}
         error={state.errors?.status?.[0]}
         dataTestId={"equipment-status"}
+        defaultValue={state.inputs?.status || ""}
       />
       <button
         type="submit"

@@ -4,8 +4,7 @@ import React from "react";
 interface SelectInputProps {
   label?: string;
   id: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  defaultValue: string;
   options: SelectInputOptions;
   required?: boolean;
   error?: string;
@@ -15,8 +14,7 @@ interface SelectInputProps {
 const SelectInput = ({
   label,
   id,
-  value,
-  onChange,
+  defaultValue,
   required = false,
   options,
   error,
@@ -35,8 +33,7 @@ const SelectInput = ({
       <select
         id={id}
         name={id}
-        value={value}
-        onChange={onChange}
+        defaultValue={defaultValue}
         className={`w-full px-3 py-2 bg-gray-800 border text-gray-200 rounded-lg focus:outline-none focus:ring-2 transition-all duration-300 ${
           error
             ? "border-red-500 focus:ring-red-500"
