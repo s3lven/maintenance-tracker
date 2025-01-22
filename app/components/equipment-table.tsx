@@ -7,7 +7,7 @@ import {
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
-  type SortingState
+  type SortingState,
 } from "@tanstack/react-table";
 import React from "react";
 
@@ -49,11 +49,11 @@ const columns = [
 ];
 
 interface EquipmentTableProps {
-    data: Equipment[]
-  }
+  data: Equipment[];
+}
 
 const EquipmentTable = ({ data }: EquipmentTableProps) => {
-    const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
     data,
@@ -77,12 +77,34 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
                   key={header.id}
                   className="p-3 text-left font-semibold border-b border-gray-600"
                 >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
+                  {header.isPlaceholder ? null : (
+                    <div
+                      className={
+                        header.column.getCanSort()
+                          ? "cursor-pointer select-none"
+                          : ""
+                      }
+                      onClick={header.column.getToggleSortingHandler()}
+                      title={
+                        header.column.getCanSort()
+                          ? header.column.getNextSortingOrder() === "asc"
+                            ? "Sort ascending"
+                            : header.column.getNextSortingOrder() === "desc"
+                            ? "Sort descending"
+                            : "Clear sort"
+                          : undefined
+                      }
+                    >
+                      {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
                       )}
+                      {{
+                        asc: " 🔼",
+                        desc: " 🔽",
+                      }[header.column.getIsSorted() as string] ?? null}
+                    </div>
+                  )}
                 </th>
               ))}
             </tr>
