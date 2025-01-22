@@ -37,6 +37,21 @@ test.describe("Equipment Form", () => {
     await expect(page.getByText("Serial Number is required")).toBeVisible();
     await expect(page.getByText("Invalid date")).toBeVisible();
   });
+
+  test("should keep inputs for invalid equipment data", async ({ page }) => {
+    // Fill in the equipment form
+    await page.getByLabel("Name").fill("Test Equipment");
+    await page.getByLabel("Department").selectOption("Assembly");
+    await page.getByLabel("Install Date").fill("2023-01-01");
+
+    // Submit the form
+    await page.getByRole("button", { name: "Submit" }).nth(0).click();
+
+    // Check for filled in inputs
+    await expect(page.getByLabel("Name")).toHaveValue("Test Equipment");
+    await expect(page.getByLabel("Department")).toHaveValue("Assembly");
+    await expect(page.getByLabel("Install Date")).toHaveValue("2023-01-01");
+  });
 });
 
 test.describe("Maintenance Record Form", () => {
@@ -83,5 +98,26 @@ test.describe("Maintenance Record Form", () => {
     await page.getByLabel("Hours Spent").fill("25");
     await page.getByRole("button", { name: "Submit" }).nth(1).click();
     await expect(page.getByText("Cannot exceed 24 hours")).toBeVisible();
+  });
+
+  test("should keep inputs for invalid maintenance record data", async ({ page }) => {
+    // Fill in the equipment form
+    await page.getByLabel("Equipment").selectOption("Test Equipment");
+    // Assuming equipment exists
+    await page.getByLabel("Maintenance Date").fill("2023-01-01");
+    await page
+      .getByTestId("maintenance-record-type")
+      .selectOption("Preventive");
+    await page.getByLabel("Technician").fill("John Smith");
+
+    // Submit the form
+    await page.getByRole("button", { name: "Submit" }).nth(1).click();
+
+    // Check for filled in inputs
+    await expect(page.getByLabel("Equipment")).toHaveValue("Test Equipment");
+    // Assuming equipment exists
+    await expect(page.getByLabel("Maintenance Date")).toHaveValue("2023-01-01");
+
+    await expect(page.getByLabel("Technician")).toHaveValue("John Smith");
   });
 });
