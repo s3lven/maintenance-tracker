@@ -130,7 +130,7 @@ const MaintenanceRecordTable = ({ data }: MaintenanceRecordTableProps) => {
             table.getColumn("priority")!.setFilterValue(e.target.value)
           }
         >
-          <option value="">All Status</option>
+          <option value="">All Priorities</option>
           {(["Low", "Medium", "High"] as MaintenanceRecordPriority[]).map(
             (item) => (
               <option key={item} value={item}>

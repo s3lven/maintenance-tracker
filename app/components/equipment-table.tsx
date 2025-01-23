@@ -12,10 +12,28 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 import React from "react";
+import { bulkUpdateStatus } from "../actions/equipment";
 
 const columnHelper = createColumnHelper<Equipment>();
 
 const columns = [
+  columnHelper.display({
+    id: "select",
+    header: ({ table }) => (
+      <input
+        type="checkbox"
+        checked={table.getIsAllRowsSelected()}
+        onChange={table.getToggleAllRowsSelectedHandler()}
+      />
+    ),
+    cell: ({ row }) => (
+      <input
+        type="checkbox"
+        checked={row.getIsSelected()}
+        onChange={row.getToggleSelectedHandler()}
+      />
+    ),
+  }),
   columnHelper.accessor("id", {
     header: "ID",
     cell: (info) => info.getValue(),
@@ -62,6 +80,9 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [rowSelection, setRowSelection] = React.useState<
+    Record<string, boolean>
+  >({});
 
   const table = useReactTable({
     data,
@@ -71,14 +92,22 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getRowId: (row) => row.id,
     state: {
       sorting,
       globalFilter,
       columnFilters,
+      rowSelection,
     },
     onGlobalFilterChange: setGlobalFilter,
     onColumnFiltersChange: setColumnFilters,
+    onRowSelectionChange: setRowSelection,
   });
+
+  const [editStatus, setEditStatus] = React.useState(
+    (table.getColumn("status")?.getFilterValue() as EquipmentStatus) ||
+      "Operational"
+  );
 
   const equipmentStatus: EquipmentStatus[] = [
     "Down",
@@ -88,15 +117,30 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
   ];
 
   const statusColors: Record<EquipmentStatus, string> = {
-    Down: "bg-red-500/20",
-    Maintenance: "bg-yellow-500/20",
-    Operational: "bg-green-500/20",
-    Retired: "bg-gray-500/20",
+    Down: "bg-red-500/20 hover:bg-red-500/30",
+    Maintenance: "bg-yellow-500/20 hover:bg-yellow-500/30",
+    Operational: "bg-green-500/20 hover:bg-green-500/30",
+    Retired: "bg-gray-500/20 hover:bg-gray-500/30",
+  };
+
+  const handleBulkEdit = async () => {
+    // Get selected row IDs
+    const selectedRowIds = Object.keys(rowSelection).filter(
+      (id) => rowSelection[id]
+    );
+
+    const result = await bulkUpdateStatus(selectedRowIds, editStatus);
+
+    if (result.success) {
+      setRowSelection({});
+    } else {
+      console.error(result.message);
+    }
   };
 
   return (
     <div className="space-y-4 w-full">
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-5 gap-4">
         <input
           type="text"
           value={globalFilter}
@@ -136,6 +180,29 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
             </option>
           ))}
         </select>
+
+        {Object.keys(rowSelection).length !== 0 && (
+          <div className="col-span-1 grid grid-cols-2 gap-2">
+            <select
+              className="p-2 rounded-lg bg-gray-700"
+              value={editStatus}
+              onChange={(e) => setEditStatus(e.target.value as EquipmentStatus)}
+            >
+              <option value="">All Status</option>
+              {equipmentStatus.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={handleBulkEdit}
+              className="p-2 bg-blue-500 hover:bg-blue-600 rounded-lg"
+            >
+              Confirm Bulk Edit
+            </button>
+          </div>
+        )}
       </div>
       <table className="w-full border-collapse bg-gray-800 shadow-md rounded-lg overflow-hidden">
         <thead>
