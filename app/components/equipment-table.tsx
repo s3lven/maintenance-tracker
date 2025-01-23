@@ -87,6 +87,13 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
     "Retired",
   ];
 
+  const statusColors: Record<EquipmentStatus, string> = {
+    Down: "bg-red-500/20",
+    Maintenance: "bg-yellow-500/20",
+    Operational: "bg-green-500/20",
+    Retired: "bg-gray-500/20",
+  };
+
   return (
     <div className="space-y-4 w-full">
       <div className="grid grid-cols-4 gap-4">
@@ -174,18 +181,26 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
         </thead>
         <tbody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <tr
-                key={row.id}
-                className="hover:bg-gray-700 transition-colors duration-200 border-b border-gray-600 last:border-none"
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="p-3 text-gray-300">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))
+            table.getRowModel().rows.map((row) => {
+              const status = row.getValue("status") as EquipmentStatus;
+              const rowColor = statusColors[status] || " ";
+
+              return (
+                <tr
+                  key={row.id}
+                  className={`hover:bg-gray-700 transition-colors duration-200 border-b border-gray-600 last:border-none ${rowColor}`}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="p-3 text-gray-300">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })
           ) : (
             <tr>
               <td
