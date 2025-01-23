@@ -123,16 +123,34 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
     Retired: "bg-gray-500/20 hover:bg-gray-500/30",
   };
 
+  const handleConfirmEdit = async () => {
+   if (window.confirm("Are you sure you want to edit the status of the selected equipment?")) {
+      await handleBulkEdit();
+    }
+  }
+
   const handleBulkEdit = async () => {
     // Get selected row IDs
     const selectedRowIds = Object.keys(rowSelection).filter(
       (id) => rowSelection[id]
     );
 
+    // Validate input
+    if (selectedRowIds.length === 0) {
+      alert("Please select at least one row.");
+      return;
+    }
+
+    if (!editStatus) {
+      alert("Please select a status.");
+      return;
+    }
+
     const result = await bulkUpdateStatus(selectedRowIds, editStatus);
 
     if (result.success) {
       setRowSelection({});
+      setEditStatus("Operational");
     } else {
       console.error(result.message);
     }
@@ -196,7 +214,7 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
               ))}
             </select>
             <button
-              onClick={handleBulkEdit}
+              onClick={handleConfirmEdit}
               className="p-2 bg-blue-500 hover:bg-blue-600 rounded-lg"
             >
               Confirm Bulk Edit
