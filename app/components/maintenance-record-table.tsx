@@ -20,17 +20,19 @@ import {
 } from "@tanstack/react-table";
 import React from "react";
 import Popover from "./popover";
+import Filter from "./filter";
+import { isWithinRange } from "@/lib/dateRangeFilter";
 
 const columnHelper = createColumnHelper<MaintenanceRecord>();
 
 const columns = [
   columnHelper.accessor("id", {
-    header: "ID",
+    header: () => "ID",
     cell: (info) => info.getValue(),
     enableGrouping: false,
   }),
   columnHelper.accessor("equipmentId", {
-    header: "Equipment Name",
+    header: "Equipment",
     cell: (info) => info.getValue(),
     enableGrouping: true,
   }),
@@ -54,8 +56,9 @@ const columns = [
     },
     enableGrouping: false,
     meta: {
-      filterVariant: "range"
-    }
+      filterVariant: "date",
+    },
+    filterFn: "dateRangeFilter",
   }),
   columnHelper.accessor("type", {
     header: "Type",
@@ -64,8 +67,12 @@ const columns = [
     enableGrouping: false,
     meta: {
       filterVariant: "select",
-      selectOptions: ["Emergency", "Preventive", "Repair"] as MaintenanceRecordType[]
-    }
+      selectOptions: [
+        "Emergency",
+        "Preventive",
+        "Repair",
+      ] as MaintenanceRecordType[],
+    },
   }),
   columnHelper.accessor("technician", {
     header: "Technician",
@@ -78,14 +85,18 @@ const columns = [
     enableGrouping: false,
   }),
   columnHelper.accessor("completionStatus", {
-    header: "Completion Status",
+    header: "Status",
     cell: (info) => info.getValue(),
     filterFn: "includesString",
     enableGrouping: false,
     meta: {
       filterVariant: "select",
-      selectOptions: ["Complete", "Incomplete", "Pending Parts"] as MaintenanceRecordCompletionStatus[]
-    }
+      selectOptions: [
+        "Complete",
+        "Incomplete",
+        "Pending Parts",
+      ] as MaintenanceRecordCompletionStatus[],
+    },
   }),
   columnHelper.accessor("priority", {
     header: "Priority",
@@ -94,8 +105,8 @@ const columns = [
     enableGrouping: false,
     meta: {
       filterVariant: "select",
-      selectOptions: ["Low", "Medium", "High"] as MaintenanceRecordPriority[]
-    }
+      selectOptions: ["Low", "Medium", "High"] as MaintenanceRecordPriority[],
+    },
   }),
   columnHelper.accessor("partsReplaced", {
     header: "Parts Replaced",
@@ -125,7 +136,7 @@ const MaintenanceRecordTable = ({ data }: MaintenanceRecordTableProps) => {
   const table = useReactTable({
     data,
     columns,
-    filterFns: {},
+    filterFns: { dateRangeFilter: isWithinRange },
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -153,63 +164,6 @@ const MaintenanceRecordTable = ({ data }: MaintenanceRecordTableProps) => {
           placeholder="Search equipment..."
           className="p-2 rounded-lg bg-gray-700 col-span-2"
         />
-
-        <select
-          className="p-2 rounded-lg bg-gray-700 col-span-1"
-          value={table.getColumn("type")!.getFilterValue() as string}
-          onChange={(e) =>
-            table.getColumn("type")!.setFilterValue(e.target.value)
-          }
-        >
-          <option value="">All Types</option>
-          {(
-            ["Emergency", "Preventive", "Repair"] as MaintenanceRecordType[]
-          ).map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
-
-        <select
-          className="p-2 rounded-lg bg-gray-700 col-span-1"
-          value={table.getColumn("priority")!.getFilterValue() as string}
-          onChange={(e) =>
-            table.getColumn("priority")!.setFilterValue(e.target.value)
-          }
-        >
-          <option value="">All Priorities</option>
-          {(["Low", "Medium", "High"] as MaintenanceRecordPriority[]).map(
-            (item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            )
-          )}
-        </select>
-
-        <select
-          className="p-2 rounded-lg bg-gray-700 col-span-1"
-          value={
-            table.getColumn("completionStatus")!.getFilterValue() as string
-          }
-          onChange={(e) =>
-            table.getColumn("completionStatus")!.setFilterValue(e.target.value)
-          }
-        >
-          <option value="">All Status</option>
-          {(
-            [
-              "Complete",
-              "Incomplete",
-              "Pending Parts",
-            ] as MaintenanceRecordCompletionStatus[]
-          ).map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
       </div>
 
       <table className="w-full border-collapse bg-gray-800 shadow-md rounded-lg">
@@ -220,14 +174,15 @@ const MaintenanceRecordTable = ({ data }: MaintenanceRecordTableProps) => {
                 <th
                   key={header.id}
                   className="p-3 text-left font-semibold border-b border-gray-600"
+                  colSpan={header.colSpan}
                 >
                   {header.isPlaceholder
                     ? null
                     : !header.isPlaceholder && (
-                        <>
+                        <div className="h-20 grid grid-rows-2 justify-start ">
                           <Popover
                             trigger={
-                              <div className="hover:bg-gray-600 px-2 cursor-pointer rounded-lg">
+                              <div className="h-full w-full hover:bg-gray-600 px-2 cursor-pointer rounded-lg">
                                 {flexRender(
                                   header.column.columnDef.header,
                                   header.getContext()
@@ -268,12 +223,10 @@ const MaintenanceRecordTable = ({ data }: MaintenanceRecordTableProps) => {
                               </>
                             }
                           />
-                          {/* {header.column.getCanFilter() && (
-                            <div>
-                              <Filter column={header.column}/>
-                            </div>
-                          )} */}
-                        </>
+                          {header.column.getCanFilter() ? (
+                            <Filter column={header.column} />
+                          ) : null}
+                        </div>
                       )}
                 </th>
               ))}

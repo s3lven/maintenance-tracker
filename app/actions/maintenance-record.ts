@@ -7,7 +7,7 @@ const maintenanceRecords: MaintenanceRecord[] = [
   {
     id: "1",
     equipmentId: "Test Equipment",
-    date: new Date(),
+    date: new Date('1/24/2025'),
     type: "Preventive",
     technician: "John Doe",
     hoursSpent: 2,
@@ -19,7 +19,7 @@ const maintenanceRecords: MaintenanceRecord[] = [
   {
     id: "2",
     equipmentId: "Test Equipment 2",
-    date: new Date(),
+    date: new Date('1/24/2025'),
     type: "Emergency",
     technician: "Jane Doe",
     hoursSpent: 3,
@@ -31,7 +31,7 @@ const maintenanceRecords: MaintenanceRecord[] = [
   {
     id: "3",
     equipmentId: "Test Equipment 3",
-    date: new Date(),
+    date: new Date('1/24/2025'),
     type: "Repair",
     technician: "Alice Smith",
     hoursSpent: 1,
