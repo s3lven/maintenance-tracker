@@ -15,7 +15,7 @@ const SelectInput = ({
   label,
   id,
   defaultValue,
-  required = false,
+  required = true,
   options,
   error,
   dataTestId = null

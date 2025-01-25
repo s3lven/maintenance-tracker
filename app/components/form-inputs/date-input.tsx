@@ -11,7 +11,7 @@ interface DateInputProps {
 const DateInput = ({
   id,
   label,
-  required,
+  required = true,
   error,
   defaultValue,
 }: DateInputProps) => {

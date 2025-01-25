@@ -63,7 +63,6 @@ const EquipmentForm = () => {
         id="installDate"
         label="Install Date"
         error={state.errors?.installDate?.[0]}
-        required
         defaultValue={state.inputs?.installDate?.toString()}
       />
       <SelectInput

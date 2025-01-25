@@ -14,7 +14,7 @@ const FormInput = ({
   type = "text",
   placeholder,
   defaultValue,
-  required = false,
+  required = true,
   error,
 }: FormInputProps) => {
   return (

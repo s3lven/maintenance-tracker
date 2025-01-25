@@ -41,7 +41,6 @@ const MaintenanceRecordForm = ({ equipments }: { equipments: Equipment[] }) => {
         id="date"
         label="Maintenance Date"
         error={state.errors?.date?.[0]}
-        required
         defaultValue={state.inputs?.date}
       />
       <SelectInput

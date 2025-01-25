@@ -28,14 +28,14 @@ test.describe("Equipment Form", () => {
     // Submit empty form
     await page.getByRole("button", { name: "Submit" }).nth(0).click();
 
-    // Check for validation errors
-    await expect(
-      page.getByText("Name must be at least 3 characters")
-    ).toBeVisible();
-    await expect(page.getByText("Location is required")).toBeVisible();
-    await expect(page.getByText("Model is required")).toBeVisible();
-    await expect(page.getByText("Serial Number is required")).toBeVisible();
-    await expect(page.getByText("Invalid date")).toBeVisible();
+    // Check for browser-side validation
+    await expect(page.getByLabel("Name")).toHaveAttribute('required', '')
+    await expect(page.getByLabel("Location")).toHaveAttribute('required', '')
+    await expect(page.getByLabel("Department")).toHaveAttribute('required', '')
+    await expect(page.getByLabel("Model")).toHaveAttribute('required', '')
+    await expect(page.getByLabel("Serial Number")).toHaveAttribute('required', '')
+    await expect(page.getByLabel("Install Date")).toHaveAttribute('required', '')
+    await expect(page.getByTestId("equipment-status")).toHaveAttribute('required', '')
   });
 
   test("should keep inputs for invalid equipment data", async ({ page }) => {
@@ -89,7 +89,26 @@ test.describe("Maintenance Record Form", () => {
   test("should validate maintenance hours", async ({ page }) => {
     // Test negative hours
     await page.getByLabel("Hours Spent").fill("-1");
+    // FIll out the rest of the form
+    await page.getByLabel("Equipment").selectOption("Test Equipment");
+    // Assuming equipment exists
+    await page.getByLabel("Maintenance Date").fill("2023-01-01");
+    await page
+      .getByTestId("maintenance-record-type")
+      .selectOption("Preventive");
+    await page.getByLabel("Technician").fill("John Smith");
+    await page
+      .getByLabel("Description")
+      .fill("Regular maintenance check performed");
+    await page
+      .getByTestId("maintenance-record-priority")
+      .selectOption("Medium");
+    await page
+      .getByTestId("maintenance-record-completion-status")
+      .selectOption("Complete");
+
     await page.getByRole("button", { name: "Submit" }).nth(1).click();
+
     await expect(
       page.getByText("Hours spent must be a positive number")
     ).toBeVisible();
