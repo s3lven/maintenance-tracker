@@ -16,7 +16,33 @@ const maintenanceRecords: MaintenanceRecord[] = [
     priority: "Medium",
     completionStatus: "Complete",
   },
+  {
+    id: "2",
+    equipmentId: "Test Equipment 2",
+    date: new Date(),
+    type: "Emergency",
+    technician: "Jane Doe",
+    hoursSpent: 3,
+    description: "Replaced faulty component",
+    partsReplaced: ["Component X"],
+    priority: "High",
+    completionStatus: "Incomplete",
+  },
+  {
+    id: "3",
+    equipmentId: "Test Equipment 3",
+    date: new Date(),
+    type: "Repair",
+    technician: "Alice Smith",
+    hoursSpent: 1,
+    description: "Fixed a minor issue",
+    partsReplaced: ["Screw"],
+    priority: "Low",
+    completionStatus: "Pending Parts",
+  },
 ];
+
+console.log(maintenanceRecords);
 
 export async function getMaintenanceRecords(): Promise<MaintenanceRecord[]> {
   return maintenanceRecords;
@@ -61,11 +87,11 @@ export async function submitMaintenanceRecordForm(
   const newRecord: MaintenanceRecord = {
     ...result.data,
     id: String(maintenanceRecords.length + 1),
-  }
+  };
 
   // Save the data to the database
   maintenanceRecords.push(newRecord);
-  revalidatePath('/')
+  revalidatePath("/");
 
   return {
     success: true,
