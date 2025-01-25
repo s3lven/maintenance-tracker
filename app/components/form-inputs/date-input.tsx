@@ -27,8 +27,7 @@ const DateInput = ({
         id={id}
         name={id}
         type="date"
-        // TODO: Remove Required
-        // required={required}
+        required={required}
         defaultValue={defaultValue}
         className={`w-full px-3 py-2 bg-gray-800 border text-gray-200 rounded-lg focus:outline-none focus:ring-2 transition-all duration-300 ${
           error

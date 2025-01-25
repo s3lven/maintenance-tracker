@@ -1,7 +1,7 @@
 import { MaintenanceRecord } from "@/types";
 import { Row } from "@tanstack/react-table";
 
-export const isWithinRange = (
+export const dateRangeFilter = (
   row: Row<MaintenanceRecord>,
   columnId: string,
   value: [Date | null, Date | null]

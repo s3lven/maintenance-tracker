@@ -12,7 +12,7 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 import React from "react";
-import { bulkUpdateStatus } from "../actions/equipment";
+import { bulkUpdateStatus } from "../../actions/equipment";
 
 const columnHelper = createColumnHelper<Equipment>();
 
@@ -124,10 +124,14 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
   };
 
   const handleConfirmEdit = async () => {
-   if (window.confirm("Are you sure you want to edit the status of the selected equipment?")) {
+    if (
+      window.confirm(
+        "Are you sure you want to edit the status of the selected equipment?"
+      )
+    ) {
       await handleBulkEdit();
     }
-  }
+  };
 
   const handleBulkEdit = async () => {
     // Get selected row IDs

@@ -11,7 +11,7 @@ const Filter = ({ column }: { column: Column<any, unknown> }) => {
     const options = column.columnDef.meta?.selectOptions ?? [];
     return (
       <select
-        className="p-2 rounded-lg bg-gray-800"
+        className="p-2 text-sm rounded-lg bg-gray-800"
         onChange={(e) => column.setFilterValue(e.target.value)}
         value={columnFilterValue?.toString()}
       >
@@ -37,7 +37,7 @@ const Filter = ({ column }: { column: Column<any, unknown> }) => {
               old?.[1],
             ])
           }
-          className="w-28 border shadow rounded text-xs"
+          className="w-28 shadow rounded-lg text-sm text-gray-300 bg-gray-800"
         />
         <input
           type="date"
@@ -48,7 +48,7 @@ const Filter = ({ column }: { column: Column<any, unknown> }) => {
               e.target.value,
             ]);
           }}
-          className="w-28 border shadow rounded text-xs"
+          className="w-28 shadow rounded-lg text-sm text-gray-300 bg-gray-800"
         />
       </div>
     );
@@ -59,8 +59,6 @@ const Filter = ({ column }: { column: Column<any, unknown> }) => {
   ) : filterVariant === "date" ? (
     <DateFilter />
   ) : (
-    // <></>
-    // <></>
     <></>
   );
 };

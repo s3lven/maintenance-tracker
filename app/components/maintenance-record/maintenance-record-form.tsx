@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useActionState } from "react";
-import { submitMaintenanceRecordForm } from "../actions/maintenance-record";
+import { submitMaintenanceRecordForm } from "../../actions/maintenance-record";
 
 import {
   Equipment,
@@ -10,9 +10,9 @@ import {
   MaintenanceRecordType,
 } from "@/types";
 
-import FormInput from "./form-input";
-import SelectInput from "./select-input";
-import DateInput from "./date-input";
+import FormInput from "../form-inputs/form-input";
+import SelectInput from "../form-inputs/select-input";
+import DateInput from "../form-inputs/date-input";
 
 const MaintenanceRecordForm = ({ equipments }: { equipments: Equipment[] }) => {
   const initialState = {

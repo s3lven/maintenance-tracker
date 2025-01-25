@@ -19,9 +19,9 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 import React from "react";
-import Popover from "./popover";
+import Popover from "../popover";
 import Filter from "./filter";
-import { isWithinRange } from "@/lib/dateRangeFilter";
+import { dateRangeFilter } from "@/lib/dateRangeFilter";
 
 const columnHelper = createColumnHelper<MaintenanceRecord>();
 
@@ -42,7 +42,6 @@ const columns = [
       const date = info.getValue();
       if (!date) return null;
 
-      // The date will sometimes return as an array, but we don't want to show a date value when grouped anyway.
       try {
         if (date instanceof Date) {
           return date.toLocaleDateString();
@@ -117,7 +116,6 @@ const columns = [
     header: "Description",
     cell: (info) => info.getValue(),
     enableGrouping: false,
-    // Might need to adjust the size of this column
   }),
 ];
 
@@ -136,7 +134,7 @@ const MaintenanceRecordTable = ({ data }: MaintenanceRecordTableProps) => {
   const table = useReactTable({
     data,
     columns,
-    filterFns: { dateRangeFilter: isWithinRange },
+    filterFns: { dateRangeFilter: dateRangeFilter },
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),

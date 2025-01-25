@@ -1,13 +1,13 @@
 "use client";
 
 import { useActionState } from "react";
-import { addEquipment } from "../actions/equipment";
+import { addEquipment } from "../../actions/equipment";
 
 import { Department, EquipmentStatus } from "@/types";
 
-import FormInput from "./form-input";
-import SelectInput from "./select-input";
-import DateInput from "./date-input";
+import FormInput from "../form-inputs/form-input";
+import SelectInput from "../form-inputs/select-input";
+import DateInput from "../form-inputs/date-input";
 
 const EquipmentForm = () => {
   const initialState = {

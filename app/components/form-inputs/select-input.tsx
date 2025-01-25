@@ -39,8 +39,7 @@ const SelectInput = ({
             ? "border-red-500 focus:ring-red-500"
             : "border-gray-700 focus:border-blue-500"
         }`}
-        // TODO: Remove required
-        // required={required}
+        required={required}
         data-testid={dataTestId || null}
       >
         <option value="N/A" disabled>
