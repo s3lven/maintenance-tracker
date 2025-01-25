@@ -210,7 +210,6 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
               value={editStatus}
               onChange={(e) => setEditStatus(e.target.value as EquipmentStatus)}
             >
-              <option value="">All Status</option>
               {equipmentStatus.map((status) => (
                 <option key={status} value={status}>
                   {status}
