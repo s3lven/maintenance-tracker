@@ -10,6 +10,7 @@
     "tests:e2e": "playwright test"
   },
   "dependencies": {
+    "@radix-ui/react-scroll-area": "^1.2.2",
     "@tanstack/react-table": "^8.20.6",
     "immer": "^10.1.1",
     "lucide-react": "^0.474.0",

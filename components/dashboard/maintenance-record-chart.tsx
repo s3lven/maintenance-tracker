@@ -43,7 +43,7 @@ export function MaintenanceBarChart({
   console.log("Chart Data:", chartData);
 
   return (
-    <div className="h-[500px]">
+    <div className="h-[400px] w-full">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={chartData}
@@ -51,7 +51,7 @@ export function MaintenanceBarChart({
         >
           <XAxis
             dataKey="department"
-            stroke="#d1d5db" // gray-300
+            stroke="#d1d5db"
             tick={{ fill: "#d1d5db" }}
           >
             <Label
@@ -67,8 +67,8 @@ export function MaintenanceBarChart({
             label={{
               value: "Maintenance Hours",
               angle: -90,
-              position: "left",
-              color: "#d1d5db"
+              position: "insideLeft",
+              color: "#d1d5db",
             }}
           />
           <Tooltip

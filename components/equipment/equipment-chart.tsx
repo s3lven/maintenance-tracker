@@ -36,11 +36,11 @@ const EquipmentStatusChart = ({ equipment }: { equipment: Equipment[] }) => {
   return (
     <div className="h-[400px] w-full">
       <ResponsiveContainer width="100%" height="100%">
-        <PieChart >
+        <PieChart>
           <Pie
             data={chartData}
-            innerRadius={100}
-            outerRadius={150}
+            innerRadius={80}
+            outerRadius={100}
             paddingAngle={2}
             dataKey="value"
             label
