@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { addEquipment } from "../../actions/equipment";
+import { addEquipment } from "../../app/actions/equipment";
 
 import { Department, EquipmentStatus } from "@/types";
 

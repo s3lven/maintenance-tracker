@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useActionState } from "react";
-import { submitMaintenanceRecordForm } from "../../actions/maintenance-record";
+import { submitMaintenanceRecordForm } from "../../app/actions/maintenance-record";
 
 import {
   Equipment,

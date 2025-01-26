@@ -12,7 +12,7 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 import React from "react";
-import { bulkUpdateStatus } from "../../actions/equipment";
+import { bulkUpdateStatus } from "../../app/actions/equipment";
 
 const columnHelper = createColumnHelper<Equipment>();
 
@@ -210,7 +210,7 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
               value={editStatus}
               data-testid="bulkEditStatus"
               onChange={(e) => setEditStatus(e.target.value as EquipmentStatus)}
-            > 
+            >
               {equipmentStatus.map((status) => (
                 <option key={status} value={status}>
                   {status}

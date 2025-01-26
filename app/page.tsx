@@ -1,9 +1,9 @@
 import { getEquipment } from "./actions/equipment";
 import { getMaintenanceRecords } from "./actions/maintenance-record";
-import EquipmentForm from "./components/equipment/equipment-form";
-import EquipmentTable from "./components/equipment/equipment-table";
-import MaintenanceRecordForm from "./components/maintenance-record/maintenance-record-form";
-import MaintenanceRecordTable from "./components/maintenance-record/maintenance-record-table";
+import EquipmentForm from "../components/equipment/equipment-form";
+import EquipmentTable from "../components/equipment/equipment-table";
+import MaintenanceRecordForm from "../components/maintenance-record/maintenance-record-form";
+import MaintenanceRecordTable from "../components/maintenance-record/maintenance-record-table";
 
 export default async function Home() {
   const initialEquipment = await getEquipment();
