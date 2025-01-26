@@ -4,6 +4,7 @@ import EquipmentForm from "../components/equipment/equipment-form";
 import EquipmentTable from "../components/equipment/equipment-table";
 import MaintenanceRecordForm from "../components/maintenance-record/maintenance-record-form";
 import MaintenanceRecordTable from "../components/maintenance-record/maintenance-record-table";
+import { Dashboard } from "@/components/dashboard";
 
 export default async function Home() {
   const initialEquipment = await getEquipment();
@@ -17,6 +18,10 @@ export default async function Home() {
         <EquipmentForm />
         <MaintenanceRecordForm equipments={initialEquipment} />
       </div>
+      <Dashboard
+        equipment={initialEquipment}
+        maintenanceRecords={initialRecords}
+      />
     </div>
   );
 }
