@@ -11,6 +11,7 @@ import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   getFilteredRowModel,
   getGroupedRowModel,
   getSortedRowModel,
@@ -22,6 +23,7 @@ import React from "react";
 import Popover from "../popover";
 import Filter from "./filter";
 import { dateRangeFilter } from "@/lib/dateRangeFilter";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 const columnHelper = createColumnHelper<MaintenanceRecord>();
 
@@ -139,6 +141,7 @@ const MaintenanceRecordTable = ({ data }: MaintenanceRecordTableProps) => {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getGroupedRowModel: getGroupedRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
     state: {
       sorting,
       globalFilter,
@@ -240,7 +243,35 @@ const MaintenanceRecordTable = ({ data }: MaintenanceRecordTableProps) => {
               >
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="p-3 text-gray-300">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {cell.getIsGrouped() ? (
+                      // If it's a grouped cell, add an expander and row count
+                      <>
+                        <button
+                          className={`${
+                            row.getCanExpand()
+                              ? "cursor-pointer"
+                              : "cursor-normal"
+                          }
+                          flex gap-2 items-center`}
+                          onClick={row.getToggleExpandedHandler()}
+                        >
+                          {row.getIsExpanded() ? (
+                            <ChevronDown />
+                          ) : (
+                            <ChevronRight />
+                          )}{" "}
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}{" "}
+                          ({row.subRows.length})
+                        </button>
+                      </>
+                    ) : cell.getIsPlaceholder() ? null : (
+                      // Don't repeat values in the table
+                      // Otherwise, just render the regular cell
+                      flexRender(cell.column.columnDef.cell, cell.getContext())
+                    )}
                   </td>
                 ))}
               </tr>
