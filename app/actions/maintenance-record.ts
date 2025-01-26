@@ -42,8 +42,6 @@ const maintenanceRecords: MaintenanceRecord[] = [
   },
 ];
 
-console.log(maintenanceRecords);
-
 export async function getMaintenanceRecords(): Promise<MaintenanceRecord[]> {
   return maintenanceRecords;
 }
@@ -71,12 +69,10 @@ export async function submitMaintenanceRecordForm(
       .map((part) => part.trim()),
     hoursSpent: Number(rawFormData.hoursSpent),
   };
-  console.log("Form data:", parsedFormData);
 
   const result = maintenanceRecordSchema.safeParse(parsedFormData);
 
   if (!result.success) {
-    console.log(result.error.flatten().fieldErrors);
     return {
       errors: result.error.flatten().fieldErrors,
       message: "Form submission failed. Please check the errors.",

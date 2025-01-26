@@ -159,7 +159,7 @@ const MaintenanceRecordTable = ({ data }: MaintenanceRecordTableProps) => {
           type="text"
           value={globalFilter}
           onChange={(e) => setGlobalFilter(e.target.value)}
-          placeholder="Search equipment..."
+          placeholder="Search records..."
           className="p-2 rounded-lg bg-gray-700 col-span-2"
         />
       </div>

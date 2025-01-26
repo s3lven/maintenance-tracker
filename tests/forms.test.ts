@@ -1,7 +1,8 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Equipment Form", () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, request }) => {
+    await request.post('/api/test')
     await page.goto("/");
   });
 
@@ -55,7 +56,8 @@ test.describe("Equipment Form", () => {
 });
 
 test.describe("Maintenance Record Form", () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, request }) => {
+    await request.post('/api/test')
     await page.goto("/");
   });
 

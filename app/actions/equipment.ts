@@ -46,6 +46,21 @@ const equipmentData: Equipment[] = [
   },
 ];
 
+// // Initialize data stores with fresh objects
+// let equipmentData: Equipment[] = originalData.map((data) => ({
+//   ...data,
+//   installDate: new Date(data.installDate),
+// }));
+
+// // For testing purposes -- in actuality we would have a test database.
+// export async function resetData() {
+//   equipmentData = originalData.map((data) => ({
+//     ...data,
+//     installDate: new Date(data.installDate),
+//   }));
+//   console.log("RESETTING DATA", equipmentData);
+// }
+
 export async function getEquipment(): Promise<Equipment[]> {
   return equipmentData;
 }
@@ -60,12 +75,10 @@ export async function addEquipment(prevState: unknown, formData: FormData) {
     status: formData.get("status") as string,
     installDate: new Date(formData.get("installDate") as string),
   };
-  console.log("Form data:", parsedFormData);
 
   const result = equipmentSchema.safeParse(parsedFormData);
 
   if (!result.success) {
-    console.log(result.error.flatten().fieldErrors);
     return {
       errors: result.error.flatten().fieldErrors,
       message: "Form submission failed. Please check the errors.",
@@ -129,7 +142,6 @@ export async function bulkUpdateStatus(
   status: EquipmentStatus
 ): Promise<{ success: boolean; message: string }> {
   try {
-    console.log(ids, status);
     // Update each equipment item in the array
     ids.forEach((id) => {
       const index = equipmentData.findIndex((e) => e.id === id);
@@ -141,7 +153,7 @@ export async function bulkUpdateStatus(
     revalidatePath("/");
     return { success: true, message: "Equipment status updated successfully" };
   } catch (error) {
-    console.error(error)
+    console.error(error);
     return { success: false, message: "Failed to update equipment status" };
   }
 }

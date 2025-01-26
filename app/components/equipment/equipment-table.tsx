@@ -208,8 +208,9 @@ const EquipmentTable = ({ data }: EquipmentTableProps) => {
             <select
               className="p-2 rounded-lg bg-gray-700"
               value={editStatus}
+              data-testid="bulkEditStatus"
               onChange={(e) => setEditStatus(e.target.value as EquipmentStatus)}
-            >
+            > 
               {equipmentStatus.map((status) => (
                 <option key={status} value={status}>
                   {status}

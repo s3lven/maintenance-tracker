@@ -14,13 +14,9 @@ export const dateRangeFilter = (
   const start = startDate ? new Date(startDate) : null;
   const end = endDate ? new Date(endDate) : null;
 
- 
-  console.log(date.getTime(), start?.getTime(), end?.getTime());
-
   //If one filter defined and date is null filter it
   if ((start || end) && !date) return false;
 
-  
   if (start && !end) {
     return date.getTime() >= start.getTime();
   } else if (!start && end) {
