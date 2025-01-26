@@ -1,7 +1,7 @@
 import { Equipment, MaintenanceRecord } from "@/types";
-import EquipmentStatusChart from "./equipment/equipment-chart";
-import { MaintenanceBarChart } from "./dashboard/maintenance-record-chart";
-import { MaintenanceLog } from "./dashboard/maintenance-log";
+import EquipmentStatusChart from "./equipment-chart";
+import { MaintenanceBarChart } from "./maintenance-record-chart";
+import { MaintenanceLog } from "./maintenance-log";
 
 export const Dashboard = ({
   equipment,

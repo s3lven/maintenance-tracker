@@ -4,7 +4,7 @@ import EquipmentForm from "../components/equipment/equipment-form";
 import EquipmentTable from "../components/equipment/equipment-table";
 import MaintenanceRecordForm from "../components/maintenance-record/maintenance-record-form";
 import MaintenanceRecordTable from "../components/maintenance-record/maintenance-record-table";
-import { Dashboard } from "@/components/dashboard";
+import { Dashboard } from "@/components/dashboard/dashboard";
 
 export default async function Home() {
   const initialEquipment = await getEquipment();

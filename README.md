@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Maintenance Tracking System
 
-## Getting Started
+## Overview
+Create a simple maintenance tracking system that allows technicians to log maintenance activities on equipment and visualize basic maintenance metrics.
 
-First, run the development server:
+## Setup Instructions
 
+### Prerequisites
+- Node.js (version 20+)
+- npm (version 10+)
+
+### Installation steps
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/s3lven/maintenance-tracker.git
+    ```
+2. Navigate to the project directory:
+    ```bash
+    cd maintenance-tracker
+    ```
+3. Install dependencies:
+    ```bash
+    npm install
+    ```
+
+### How to run the application
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### How to run tests
+```bash
+npm run test:e2e
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features Implementation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### List of completed features
+- Equipment and Maintenance Forms
+  - Uses Server Actions and useFormState for form handling.
+  - Zod validation in Server Actions.
+- Equipment Table
+  - Displays all fields from schema.
+  - Status-based row coloring.
+  - Global filtering (Search Bar).
+  - Filter by department and status outside of table.
+  - Sort by ascending and descending.
+  - Bulk Edit Status through checkbox select
+- Maintenance Records Table
+  - Displays all fields from schema.
+  - Selects equipment from equipment table.
+  - Global filtering (Search Bar).
+  - Filter by maintenance date range, type, status, and priority inside of table.
+  - Sort by ascending and descending.
+  - Grouping by equipment name into consolidated rows,
+  - Expand rows from equipment name to view maintenance records of specific equipment.
+- Dashboard
+  - Pie chart for equipment status breakdown
+  - Bar chart for maintenance hours by department (from equipments table)
+  - Recent Maintenance Log from 5 most recent logs submitted
 
-## Learn More
+## Testing Approach
 
-To learn more about Next.js, take a look at the following resources:
+### Testing strategy
+- End-to-end tests 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### What is tested
+- Forms: Ensures correct rendering, validation (browser-side and server-side), and keeping inputs on invalid submissions.
+- Tables: Ensures correct rendering (data, no data, filtered data), ensures bulk status makes correct edits to affected rows.`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Technical Decisions
 
-## Deploy on Vercel
+### Key libraries used and why
+- React and TailwindCSS: For building the user interface
+- Next.js: For Server Actions (data fetching and modification)
+- Tanstack Table: For creating full-featured tables
+- Recharts: For creating chart visualizations
+- Zod: For server-side validation (with Server Actions)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Architecture decisions
+- Component-based architecture for reusability (form inputs)
+- Data fetching and modification through Server Actions
+- Separated features and components by entity (equipment, maintenance record, dashboard)
+- Data is stored server side in server actions (for simplicity)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### State management approach
+- Used useState for tracking table states (sorting, grouping, filtering)
+
+## Known Issues/Limitations
+
+### Current bugs or limitations
+- Cannot mock server actions. Filtering cannot be accurately tested because data gets changed from form testing and does not get reset to original, consistent data. 
+
+
+### Future improvements
+- Routing: Dashboard as homepage, equipment table and form as another page, and maintenance table and form as last page. Navigated through Navbar. 
+- User Experience: Improve responsiveness of charts and tables, hover states, and loading states for asynchronous operations.
