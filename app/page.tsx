@@ -14,7 +14,7 @@ export default async function Home() {
     <div className="w-full flex flex-col items-center justify-center min-h-screen gap-4">
       <EquipmentTable data={initialEquipment} />
       <MaintenanceRecordTable data={initialRecords} />
-      <div className="w-full grid grid-cols-2 gap-4">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
         <EquipmentForm />
         <MaintenanceRecordForm equipments={initialEquipment} />
       </div>

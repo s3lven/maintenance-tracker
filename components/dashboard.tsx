@@ -21,7 +21,7 @@ export const Dashboard = ({
       </header>
 
       {/* Chart Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1">
         {/* Pie Chart Card */}
         <div className="bg-gray-600 rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Equipment Status</h2>
@@ -39,7 +39,7 @@ export const Dashboard = ({
           />
         </div>
 
-        <div className="bg-gray-600 rounded-lg p-6 col-span-2">
+        <div className="bg-gray-600 rounded-lg p-6 lg:col-span-2">
           <MaintenanceLog maintenanceRecords={maintenanceRecords} />
         </div>
       </div>
